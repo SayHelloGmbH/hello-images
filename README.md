@@ -5,8 +5,10 @@ This is a WordPress plugin that adds an image proxy to resize and crop images in
 
 And it's super easy!
 
-Let's say you have an image: `https://mydomain.com/wp-content/uploads/myimage.jpg`.  
-Now you need a croped and resized PNG you can simply add parameters to the image:  
+Let's say you have an image:  
+`https://mydomain.com/wp-content/uploads/myimage.jpg`
+
+Now you need a cropped and resized PNG you can simply add GET-parameters to the image:  
 `https://mydomain.com/wp-content/uploads/myimage.jpg?width=200&height=300&format=png`
 
 ## How it works
