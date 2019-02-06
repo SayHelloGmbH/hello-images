@@ -2,11 +2,11 @@
 
 /*
 Plugin Name: Hello Images
-Plugin URI: https://github.com/SayHelloGmbH/progressive-wordpress
+Plugin URI: https://github.com/SayHelloGmbH/Hello-Images
 Description: Image resize proxy for WordPress
 Author: Nico Martin
 Author URI: https://nicomartin.ch
-Version: 0.0.1
+Version: 0.1.1
 Text Domain: hello-images
 Domain Path: /languages
  */
