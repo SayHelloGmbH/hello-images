@@ -6,7 +6,7 @@ Plugin URI: https://github.com/SayHelloGmbH/Hello-Images
 Description: Image resize proxy for WordPress
 Author: Nico Martin
 Author URI: https://nicomartin.ch
-Version: 0.1.3
+Version: 0.1.5
 Text Domain: hello-images
 Domain Path: /languages
  */
