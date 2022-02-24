@@ -2,25 +2,34 @@
 
 namespace SayHello\HelloImages;
 
-class Plugin {
-	private static $htaccess_key = 'HelloImages';
+class Plugin
+{
+    public static $folder = 'hello-images';
 
-	public static function add() {
-		$htaccess       = new \nicomartin\Htaccess( self::$htaccess_key );
-		$content_folder = str_replace( ABSPATH, '', WP_CONTENT_DIR );
+    public static function add()
+    {
+        $content = "<IfModule mod_rewrite.c>\n";
+        $content .= "rewriteEngine on\n";
+        $content .= "RewriteCond %{REQUEST_FILENAME} !-f\n";
+        $content .= "RewriteCond %{REQUEST_FILENAME} !-d\n";
+        $content .= "RewriteRule ^.*$ ../../../index.php?hello-image [NC,L,QSA]\n";
+        $content .= "</IfModule>";
+        file_put_contents(self::getUploadsFolder() . '.htaccess', $content);
+    }
 
-		$content = [
-			'<IfModule mod_rewrite.c>',
-			'RewriteEngine On',
-			'RewriteRule ^' . $content_folder . '/([^\.]+)\.(png|jpg|gif) /index.php?hello-image=$1.$2 [QSA]',
-			'</IfModule>',
-		];
+    public static function getUploadsFolder($type = 'basedir')
+    {
+        $upload = wp_get_upload_dir();
+        $dir    = trailingslashit($upload[$type]) . trailingslashit(self::$folder);
+        if ( ! is_dir($dir) && $type === 'basedir') {
+            mkdir($dir);
+        }
 
-		$htaccess->set( implode( "\n", $content ) );
-	}
+        return $dir;
+    }
 
-	public static function remove() {
-		$htaccess = new \nicomartin\Htaccess( self::$htaccess_key );
-		$htaccess->delete();
-	}
+    public static function remove()
+    {
+        // todo: unlink .htaccess
+    }
 }
