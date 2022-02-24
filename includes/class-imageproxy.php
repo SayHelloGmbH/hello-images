@@ -48,6 +48,7 @@ class ImageProxy
         }
 
         $baseImagePath = implode('/', $baseImagePathParts);
+        $baseImageUrl  = trailingslashit(get_home_url()) . $baseImagePath;
 
         if ( ! extension_loaded('imagick')) {
             exit;
@@ -93,18 +94,16 @@ class ImageProxy
             $imagick->blurImage($blur, 10);
         }
 
-        $imagick->writeImage($absoluteFolderToCreate . $fileName);
+        /**
+         * Set format
+         */
 
-        self::exitImage($absoluteFolderToCreate . $fileName);
-
-        exit;
-    }
-
-    private static function exitImage($image)
-    {
-        header('Content-Type: ' . mime_content_type($image));
-        header('Content-Length: ' . filesize($image));
-        echo file_get_contents($image);
+        $mime = $imagick->getImageMimeType();
+        $mime = $mime === 'image/x-jpeg' ? 'image/jpeg' : $mime;
+        $blob = $imagick->getImagesBlob();
+        header('Content-Type: ' . $mime);
+        header('Content-Length: ' . strlen($blob));
+        echo $blob;
         exit;
     }
 }
