@@ -29,13 +29,13 @@ class ImageProxy
             // get quality from quality-90
             if (substr($part, 0, 5) === 'size-') {
                 $sizes  = explode('x', str_replace('size-', '', $part));
-                $width  = $sizes[0];
-                $height = $sizes[1];
+                $width  = intval($sizes[0]);
+                $height = intval($sizes[1]);
             } elseif (substr($part, 0, 5) === 'blur-') {
-                $blur = str_replace('blur-', '', $part);
+                $blur = intval(str_replace('blur-', '', $part));
             } elseif (substr($part, 0, 8) === 'quality-') {
-                $quality = str_replace('quality-', '', $part);
-            } elseif ($part !== Plugin::$folder) {
+                $quality = intval(str_replace('quality-', '', $part));
+            } elseif ($part !== Plugin::getFolder()) {
                 $baseImagePathParts[] = $part;
             }
         }
@@ -48,7 +48,6 @@ class ImageProxy
         }
 
         $baseImagePath = implode('/', $baseImagePathParts);
-        $baseImageUrl  = trailingslashit(get_home_url()) . $baseImagePath;
 
         if ( ! extension_loaded('imagick')) {
             exit;

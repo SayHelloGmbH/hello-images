@@ -4,7 +4,7 @@ namespace SayHello\HelloImages;
 
 class Plugin
 {
-    public static $folder = 'hello-images';
+    private static $folder = 'hello-images';
 
     public static function add()
     {
@@ -20,7 +20,7 @@ class Plugin
     public static function getUploadsFolder($type = 'basedir')
     {
         $upload = wp_get_upload_dir();
-        $dir    = trailingslashit($upload[$type]) . trailingslashit(self::$folder);
+        $dir    = trailingslashit($upload[$type]) . trailingslashit(self::getFolder());
         if ( ! is_dir($dir) && $type === 'basedir') {
             mkdir($dir);
         }
@@ -28,8 +28,13 @@ class Plugin
         return $dir;
     }
 
+    public static function getFolder()
+    {
+        return apply_filters('SayHello\HelloImages\Folder', self::$folder);
+    }
+
     public static function remove()
     {
-        // todo: unlink .htaccess
+        unlink(self::getUploadsFolder() . '.htaccess');
     }
 }
