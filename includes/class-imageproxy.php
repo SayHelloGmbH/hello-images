@@ -98,6 +98,8 @@ class ImageProxy
          * Set format
          */
 
+        //$imagick->writeImage($absoluteFolderToCreate . $fileName);
+
         $mime = $imagick->getImageMimeType();
         $mime = $mime === 'image/x-jpeg' ? 'image/jpeg' : $mime;
         $blob = $imagick->getImagesBlob();
