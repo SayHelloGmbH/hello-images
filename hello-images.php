@@ -15,5 +15,3 @@ include_once 'includes/class-plugin.php';
 register_activation_hook(__FILE__, ['SayHello\HelloImages\Plugin', 'add']);
 register_deactivation_hook(__FILE__, ['SayHello\HelloImages\Plugin', 'remove']);
 
-require_once 'includes/class-imageproxy.php';
-add_action('init', ['SayHello\HelloImages\ImageProxy', 'getImage']);

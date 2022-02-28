@@ -8,19 +8,17 @@ class Plugin
 
     public static function add()
     {
-        $content = "<IfModule mod_rewrite.c>\n";
-        $content .= "rewriteEngine on\n";
-        $content .= "RewriteCond %{REQUEST_FILENAME} !-f\n";
-        $content .= "RewriteCond %{REQUEST_FILENAME} !-d\n";
-        $content .= "RewriteRule ^.*$ ../../../index.php?hello-image [NC,L,QSA]\n";
-        $content .= "</IfModule>";
-        file_put_contents(self::getUploadsFolder() . '.htaccess', $content);
+        $htaccessContent = file_get_contents(dirname(dirname(__FILE__)) . '/templates/.htaccess');
+        file_put_contents(self::getUploadsFolder() . '.htaccess', $htaccessContent);
+        $indexContent = file_get_contents(dirname(dirname(__FILE__)) . '/templates/index.php');
+        $indexContent = str_replace('{{folder}}', self::$folder, $indexContent);
+        file_put_contents(self::getUploadsFolder() . 'index.php', $indexContent);
     }
 
     public static function getUploadsFolder($type = 'basedir')
     {
         $upload = wp_get_upload_dir();
-        $dir    = trailingslashit($upload[$type]) . trailingslashit(self::getFolder());
+        $dir    = trailingslashit($upload[$type]) . trailingslashit(self::$folder);
         if ( ! is_dir($dir) && $type === 'basedir') {
             mkdir($dir);
         }
@@ -28,13 +26,9 @@ class Plugin
         return $dir;
     }
 
-    public static function getFolder()
-    {
-        return apply_filters('SayHello\HelloImages\Folder', self::$folder);
-    }
-
     public static function remove()
     {
+        unlink(self::getUploadsFolder() . 'index.php');
         unlink(self::getUploadsFolder() . '.htaccess');
     }
 }
